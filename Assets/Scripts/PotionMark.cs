@@ -11,6 +11,7 @@ public class PotionMark : MonoBehaviour
     public int score;
     [SerializeField] TMP_Text scoreTxt;
     [SerializeField] GameObject floatScorePrefab;
+    ColorSelector cs;
     // Start is called before the first frame update
     void Start()
     {
@@ -18,6 +19,7 @@ public class PotionMark : MonoBehaviour
         Vector3 markPosition = new Vector3(transform.position.x, transform.position.y + yPosition, -1);
         mark = Instantiate(markPrefab, markPosition, Quaternion.identity);
         FindObjectOfType<MainButton>().buttonRelease.AddListener(GetScore);
+        cs = FindObjectOfType<ColorSelector>();
     }
 
     // Update is called once per frame
@@ -56,11 +58,12 @@ public class PotionMark : MonoBehaviour
         float thrust = 200f;
         floatScore.GetComponent<Rigidbody2D>().AddForce(floatScore.transform.up * thrust);
         // StartCoroutine(FloatScoreCoroutine(floatScore));
+        
+        cs.SetNextInstructionPotionsSelector();
         UpdateMark();
     }
 
     void UpdateMark(){
-        
         float yPosition = Random.Range(-transform.localScale.y/2,transform.localScale.y/2);
         Vector3 markPosition = new Vector3(transform.position.x, transform.position.y + yPosition, mark.transform.position.z);
         mark.transform.position = markPosition;
