@@ -22,6 +22,9 @@ public class ColorSelector : MonoBehaviour
     public UnityEvent calculateScore = new();
     UI ui;
     PotionMark pm;
+    Vector2 originalPosition;
+    Vector2 targetPosition;
+    int potionIndex;
     // Start is called before the first frame update
     void Start()
     {
@@ -44,9 +47,9 @@ public class ColorSelector : MonoBehaviour
         
         SetPlayerPotion(playerPotions.transform.GetChild(0).transform.GetChild(0).gameObject);
 
+        originalPosition = instructionPotions.GetComponent<RectTransform>().anchoredPosition;
 
         GenerateInstructions();
-
 
     }
 
@@ -67,7 +70,8 @@ public class ColorSelector : MonoBehaviour
     }
 
     public void SetNextInstructionPotionsSelector(){
-        int potionIndex = instructionPotionsList.IndexOf(selectedInstructionPotion)+1;
+        GameObject currentPotion = selectedInstructionPotion;
+        potionIndex = instructionPotionsList.IndexOf(selectedInstructionPotion)+1;
         // check end sequencs; count ex 1 2 3; index 0 1 2 3
         if (instructionPotionsList.Count<=potionIndex)
         {
@@ -75,13 +79,39 @@ public class ColorSelector : MonoBehaviour
             return;
         }
         selectedInstructionPotion = instructionPotionsList[potionIndex];
-        Destroy(instructionPotions.transform.GetChild(0).gameObject);
+
+        Animator animator = currentPotion.GetComponentInChildren<Animator>();
+        animator.SetTrigger("complete");
+        // currentPotion.transform.SetParent(FindObjectOfType<Canvas>().gameObject.transform);
+        // Destroy(currentPotion.GetComponent<VerticalLayoutGroup>());
+        
+
+        // AnimatorClipInfo[] animationInfo = animator.GetCurrentAnimatorClipInfo(0);
+        // print(animationInfo[0].clip.name + " = " + animationInfo[0].clip.length);
+        // Destroy(currentPotion, animationInfo[1].clip.length);
+        // Destroy(currentPotion, 1);
+
+        
+        
+
+        StartCoroutine(nameof(LerpObject));
+
+        // RectTransform rt = instructionPotions.GetComponent<RectTransform>();
+
+        // rt.anchoredPosition = Vector3.Lerp(instructionPotions.transform.localPosition, new Vector2(instructionPotions.transform.localPosition.x-300,instructionPotions.transform.localPosition.y), 1000);
+        
+
         // selectedInstructionPotion = instructionPotionsList[0];
         PotionSelector(selectedInstructionPotion);
     }
 
     public void GenerateInstructions(){
         ui.ResetGame();
+
+        RectTransform rt = instructionPotions.GetComponent<RectTransform>(); //getting reference to  component
+        rt.anchoredPosition = originalPosition;
+        targetPosition = instructionPotions.transform.localPosition;
+
         instructionPotionsList = new();
         int potionNum = Random.Range(25,30);
 
@@ -112,6 +142,24 @@ public class ColorSelector : MonoBehaviour
         }
         mb.PotionColor(potion.GetComponentInChildren<Image>().color);
         PotionSelector(potion);
+    }
+
+    IEnumerator LerpObject(){ 
+        float timeOfTravel=0.5f; //time after object reach a target place 
+        float currentTime=0; // actual floting time 
+        float normalizedValue;
+
+        RectTransform rt = instructionPotions.GetComponent<RectTransform>(); //getting reference to component 
+        rt.anchoredPosition = targetPosition;
+        targetPosition = new(instructionPotions.transform.localPosition.x-300,instructionPotions.transform.localPosition.y);
+        
+        while (currentTime <= timeOfTravel) { 
+            currentTime += Time.deltaTime; 
+            normalizedValue=currentTime/timeOfTravel; // we normalize our time 
+
+            rt.anchoredPosition=Vector3.Lerp(instructionPotions.transform.localPosition, targetPosition, normalizedValue); 
+            yield return null; 
+        }
     }
 }
 
