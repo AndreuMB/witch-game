@@ -15,37 +15,35 @@ public class PotionMark : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        float yPosition = Random.Range(-transform.localScale.y/2,transform.localScale.y/2);
-        Vector3 markPosition = new Vector3(transform.position.x, transform.position.y + yPosition, -1);
-        mark = Instantiate(markPrefab, markPosition, Quaternion.identity);
+        mark = Instantiate(markPrefab);
+        UpdateMark();
+
         FindObjectOfType<MainButton>().buttonRelease.AddListener(GetScore);
         cs = FindObjectOfType<ColorSelector>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    void GetScore(GameObject potion){
-        float yDistance = mark.transform.position.y - potion.transform.GetChild(0).transform.position.y;
+    public void GetScore(GameObject potion){
+        // offset from mark to potion fill for better results
+        const float OFFSET = -0.05f;
+        float yDistance = mark.transform.position.y - (potion.transform.GetChild(0).transform.position.y + OFFSET);
+        // float yDistance = mark.transform.position.y - potion.transform.GetChild(0).transform.position.y;
         yDistance = Mathf.Abs(yDistance);
-        print(yDistance);
-        string scoreMessage = "";
-        if (yDistance<0.1)
+        // print(yDistance);
+
+        string scoreMessage;
+        if (yDistance<0.08)
         {
             scoreMessage = "perfect";
             score+=100;
-        } else if (yDistance<0.5)
+        } else if (yDistance<0.2)
         {
             scoreMessage = "good";
             score+=50;
-        } else if (yDistance<1)
+        } else if (yDistance<0.5)
         {
             scoreMessage = "not bad";
             score+=25;
-        } else if (yDistance>1)
+        } else
         {
             scoreMessage = "fail";
             score-=100;
@@ -57,21 +55,22 @@ public class PotionMark : MonoBehaviour
         floatScore.GetComponent<TextMesh>().text = scoreMessage;
         float thrust = 200f;
         floatScore.GetComponent<Rigidbody2D>().AddForce(floatScore.transform.up * thrust);
-        // StartCoroutine(FloatScoreCoroutine(floatScore));
+
+        AnimatorClipInfo[] animationInfo = floatScore.GetComponent<Animator>().GetCurrentAnimatorClipInfo(0);
+        Destroy(floatScore.transform.parent.gameObject, animationInfo[0].clip.length);
         
         cs.SetNextInstructionPotionsSelector();
         UpdateMark();
     }
 
     void UpdateMark(){
-        float yPosition = Random.Range(-transform.localScale.y/2,transform.localScale.y/2);
-        Vector3 markPosition = new Vector3(transform.position.x, transform.position.y + yPosition, mark.transform.position.z);
+        float yPosition = Random.Range(-transform.localScale.y/4,transform.localScale.y/2);
+        Vector3 markPosition = new Vector3(transform.position.x, transform.position.y + yPosition, -1);
         mark.transform.position = markPosition;
     }
 
-    IEnumerator FloatScoreCoroutine(GameObject floatScore){
-        yield return new WaitForSeconds(0.4f);
-        Destroy(floatScore);
-        yield break;
+    public void SetScore(int newScore){
+        score = newScore;
+        scoreTxt.text = "SCORE: " + score.ToString();
     }
 }
