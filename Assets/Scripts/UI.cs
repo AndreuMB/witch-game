@@ -15,6 +15,8 @@ public class UI : MonoBehaviour
     float y;
     PotionMark pm;
     string rating;
+    [SerializeField] List<string> gradesString = new();
+    [SerializeField] int rangeGrade;
     // Start is called before the first frame update
     void Start()
     {
@@ -40,26 +42,41 @@ public class UI : MonoBehaviour
 
     void CalculateScore(){
         // print("score = " + pm.score);
-        // print("sec = " + Math.Round(timer));
-        int average = pm.score / (int) Math.Round(timer);
-        
-        if (average>=50)
-        {
-            rating = "S";
-        } else if (average>45)
-        {
-            rating = "A";
-        } else if (average>40)
-        {
-            rating = "B";
-        } else if (average>35)
-        {
-            rating = "C";
-        } else
-        {
-            rating = "F";
-        }
+        // int average = pm.score / (int) Math.Round(timer)/100;
+        const int TIME_LIMIT = 60; // only for bonification
+        float multiplier = (TIME_LIMIT - (int) Math.Round(timer))/10;
+        print("timer = " + (int) Math.Round(timer));
+        print("multiplier = " + multiplier);
 
+        if (multiplier<1) multiplier = 1;
+
+        float average = pm.score * multiplier;
+        
+        if (average <= 0){ // 0 or lower Fail
+            rating = "F";
+        }else if (average > (gradesString.Count - 1) * rangeGrade  + rangeGrade/3*3){ // break the table SS
+            rating = "SS";
+        }else{
+            for (int i = 0; i < gradesString.Count; i++)
+            {
+                if (average > (i+1) * rangeGrade) continue;
+
+                if (average < i * rangeGrade + rangeGrade/3*1) // X-
+                {
+                    rating = gradesString[i]+"-";
+                    break;
+                } else if (average < i * rangeGrade + rangeGrade/3*2) // X
+                {
+                    rating = gradesString[i];
+                    break;
+                } else if (average <= i * rangeGrade + rangeGrade/3*3) // X+ (ak + rangedGrade)
+                {
+                    rating = gradesString[i]+"+";
+                    break;
+                }
+            }
+        }
+        
         print("rating = " + rating);
         print("average = " + average);
 
@@ -75,3 +92,6 @@ public class UI : MonoBehaviour
         if (pm) pm.SetScore(0);
     }
 }
+
+
+
