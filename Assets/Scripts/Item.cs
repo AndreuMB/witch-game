@@ -58,7 +58,9 @@ public class Item : MonoBehaviour
     }
 
     public enum ItemType {
-        PotionUpgrade,
+        Potion0Upgrade,
+        Potion1Upgrade,
+        Potion2Upgrade,
         Protection
     }
 

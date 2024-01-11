@@ -10,10 +10,11 @@ public class PotionMark : MonoBehaviour, IShop
     GameObject mark;
     public int score;
     [SerializeField] TMP_Text scoreTxt;
+    [SerializeField] GameObject scorePoints;
     [SerializeField] GameObject floatScorePrefab;
     ColorSelector cs;
-    public int givenScore = 100;
     public int shield;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -26,11 +27,19 @@ public class PotionMark : MonoBehaviour, IShop
 
     public void GetScore(GameObject potion){
         // offset from mark to potion fill for better results
-        const float OFFSET = -0.05f;
+        // const float OFFSET = -0.05f;
+        const float OFFSET = 0;
         float yDistance = mark.transform.position.y - (potion.transform.GetChild(0).transform.position.y + OFFSET);
         // float yDistance = mark.transform.position.y - potion.transform.GetChild(0).transform.position.y;
         yDistance = Mathf.Abs(yDistance);
         // print(yDistance);
+
+        Color potionColor = potion.GetComponent<SpriteRenderer>().color;
+
+        Potion potionInfo = cs.potions.Find(playerPotion => playerPotion.color == potionColor);
+
+        int givenScore = potionInfo.points;
+        string operatorScorePoints = "+";
 
         string scoreMessage;
         if (yDistance<0.08)
@@ -40,11 +49,13 @@ public class PotionMark : MonoBehaviour, IShop
         } else if (yDistance<0.2)
         {
             scoreMessage = "good";
-            score+=givenScore/2;
+            givenScore /= 2;
+            score+=givenScore;
         } else if (yDistance<0.5)
         {
             scoreMessage = "not bad";
-            score+=givenScore/4;
+            givenScore /= 4;
+            score+=givenScore;
         } else
         {
             if (shield > 0)
@@ -53,9 +64,14 @@ public class PotionMark : MonoBehaviour, IShop
                 return;
             }
             scoreMessage = "fail";
+            operatorScorePoints = "-";
+            givenScore = 100;
             score-=100;
         }
         scoreTxt.text = "SCORE: " + score.ToString();
+        GameObject SP = Instantiate(scorePoints, scoreTxt.transform);
+        SP.GetComponent<TMP_Text>().text = operatorScorePoints + givenScore.ToString();
+        
         Quaternion zRotation = Quaternion.Euler(new Vector3(0, 0, Random.Range(-20,20)));
         GameObject floatScore = Instantiate(floatScorePrefab, new Vector3(0.5f,2,0), Quaternion.identity).transform.GetChild(0).gameObject;
         floatScore.transform.rotation = zRotation;
@@ -81,8 +97,8 @@ public class PotionMark : MonoBehaviour, IShop
         scoreTxt.text = "SCORE: " + score.ToString();
     }
 
-    void ScoreUpgrade(){
-        givenScore+=100;
+    void ScoreUpgrade(Potion potion){
+        potion.points+=100;
     }
 
     void Shield(){
@@ -93,8 +109,14 @@ public class PotionMark : MonoBehaviour, IShop
     {
         switch (itemType)
         {
-            case Item.ItemType.PotionUpgrade:
-                ScoreUpgrade();
+            case Item.ItemType.Potion0Upgrade:
+                ScoreUpgrade(cs.potions[0]);
+            break;
+            case Item.ItemType.Potion1Upgrade:
+                ScoreUpgrade(cs.potions[1]);
+            break;
+            case Item.ItemType.Potion2Upgrade:
+                ScoreUpgrade(cs.potions[2]);
             break;
             case Item.ItemType.Protection:
                 Shield();

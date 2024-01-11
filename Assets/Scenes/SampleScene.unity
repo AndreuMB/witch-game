@@ -377,6 +377,82 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &163715103
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 163715104}
+  - component: {fileID: 163715106}
+  - component: {fileID: 163715105}
+  m_Layer: 5
+  m_Name: Panel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &163715104
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 163715103}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1142033706}
+  m_Father: {fileID: 1756031295}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 0}
+  m_AnchoredPosition: {x: -302.36, y: 113.11}
+  m_SizeDelta: {x: 604.7291, y: 225.47021}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &163715105
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 163715103}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.9019608}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &163715106
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 163715103}
+  m_CullTransparentMesh: 1
 --- !u!1 &289968920
 GameObject:
   m_ObjectHideFlags: 0
@@ -1057,10 +1133,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1756031295}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -425.62, y: 1397}
-  m_SizeDelta: {x: 751.2472, y: 400.23}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 534.38, y: -310}
+  m_SizeDelta: {x: 751.2472, y: 400.22998}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &651845121
 MonoBehaviour:
@@ -1278,11 +1354,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   potions:
-  - color: {r: 0.15736282, g: 0.8113208, b: 0.13930222, a: 0}
+  - color: {r: 0.14556777, g: 0.8867924, b: 0.7962001, a: 1}
     points: 100
-  - color: {r: 0.86415094, g: 0.1288073, b: 0.266571, a: 0}
+  - color: {r: 0.86415094, g: 0.1288073, b: 0.266571, a: 1}
     points: 100
-  - color: {r: 0.7052743, g: 0.78113204, b: 0.08106079, a: 0}
+  - color: {r: 0.7052743, g: 0.78113204, b: 0.08106079, a: 1}
     points: 100
   prefabPC: {fileID: 5795207245311959292, guid: 3b7c0f5055c42784198148a754983161, type: 3}
   playerPotions: {fileID: 1537741680}
@@ -1801,16 +1877,16 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1142033705}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1756031295}
+  m_Father: {fileID: 163715104}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 0}
-  m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -370.7409, y: 195.78662}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0.000050902, y: -0.16662}
   m_SizeDelta: {x: 604.7291, y: 225.80347}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1142033707
@@ -1827,20 +1903,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shopPanel: {fileID: 384596807}
   itemsData:
-  - itemName: Potion Upgrade
+  - itemName: Potion 0 Upgrade
     itemType: 0
-    originalPrice: 1500
+    originalPrice: 200
+    stock: 6
+    consumable: 0
+  - itemName: Potion 1 Upgrade
+    itemType: 1
+    originalPrice: 200
+    stock: 6
+    consumable: 0
+  - itemName: Potion 2 Upgrade
+    itemType: 2
+    originalPrice: 200
     stock: 6
     consumable: 0
   - itemName: Protection
-    itemType: 1
-    originalPrice: 200
+    itemType: 3
+    originalPrice: 100
     stock: 3
     consumable: 1
   itemsContainer: {fileID: 1040846348}
   itemPrefab: {fileID: 6001223774874973181, guid: b8bbb0c312815fc49916d5a91fb02784, type: 3}
   moneyTxt: {fileID: 1385421334}
-  money: 100000
+  money: 0
   shopCustomer: {fileID: 1268486666}
 --- !u!114 &1142033708
 MonoBehaviour:
@@ -1952,8 +2038,8 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 4
-  m_VerticalAlignment: 1024
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -2192,8 +2278,8 @@ MonoBehaviour:
   markPrefab: {fileID: 1145096176847135165, guid: 35be0cbf089506340ba53ddf5a435dc4, type: 3}
   score: 0
   scoreTxt: {fileID: 15692859}
+  scorePoints: {fileID: 3782383998775815715, guid: 36264e7b9a358a64caaf029f82eccc2a, type: 3}
   floatScorePrefab: {fileID: 8132253873313283096, guid: 443cbac12da433a4198bd04d36bd4c0d, type: 3}
-  givenScore: 100
   shield: 0
 --- !u!1 &1371396095
 GameObject:
@@ -2813,7 +2899,7 @@ RectTransform:
   - {fileID: 805962450}
   - {fileID: 605304375}
   - {fileID: 651845120}
-  - {fileID: 1142033706}
+  - {fileID: 163715104}
   - {fileID: 1221129461}
   - {fileID: 384596808}
   m_Father: {fileID: 0}
