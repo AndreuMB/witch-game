@@ -17,11 +17,13 @@ public class UI : MonoBehaviour
     string rating;
     [SerializeField] List<string> gradesString = new();
     [SerializeField] int rangeGrade;
+    Shop shop;
     // Start is called before the first frame update
     void Start()
     {
         FindObjectOfType<ColorSelector>().calculateScore.AddListener(CalculateScore);
         pm = FindObjectOfType<PotionMark>();
+        shop = FindObjectOfType<Shop>();
     }
 
     // Update is called once per frame
@@ -80,11 +82,13 @@ public class UI : MonoBehaviour
         print("rating = " + rating);
         print("average = " + average);
 
+        shop.UpdateMoney(pm.score/10);
         ratingPanel.SetActive(true);
         RatingPanel rp = ratingPanel.GetComponent<RatingPanel>();
         rp.score.text = pm.score.ToString();
         rp.time.text = timeGO.text;
         rp.rating.text = rating;
+        shop.RestockConsumables();
     }
 
     public void ResetGame(){

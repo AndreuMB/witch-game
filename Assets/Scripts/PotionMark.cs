@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class PotionMark : MonoBehaviour
+public class PotionMark : MonoBehaviour, IShop
 {
     [SerializeField] GameObject markPrefab;
     GameObject mark;
@@ -12,6 +12,8 @@ public class PotionMark : MonoBehaviour
     [SerializeField] TMP_Text scoreTxt;
     [SerializeField] GameObject floatScorePrefab;
     ColorSelector cs;
+    public int givenScore = 100;
+    public int shield;
     // Start is called before the first frame update
     void Start()
     {
@@ -34,17 +36,22 @@ public class PotionMark : MonoBehaviour
         if (yDistance<0.08)
         {
             scoreMessage = "perfect";
-            score+=100;
+            score+=givenScore;
         } else if (yDistance<0.2)
         {
             scoreMessage = "good";
-            score+=50;
+            score+=givenScore/2;
         } else if (yDistance<0.5)
         {
             scoreMessage = "not bad";
-            score+=25;
+            score+=givenScore/4;
         } else
         {
+            if (shield > 0)
+            {
+                shield--;
+                return;
+            }
             scoreMessage = "fail";
             score-=100;
         }
@@ -72,5 +79,26 @@ public class PotionMark : MonoBehaviour
     public void SetScore(int newScore){
         score = newScore;
         scoreTxt.text = "SCORE: " + score.ToString();
+    }
+
+    void ScoreUpgrade(){
+        givenScore+=100;
+    }
+
+    void Shield(){
+        shield++;
+    }
+
+    public void BoughtItem(Item.ItemType itemType)
+    {
+        switch (itemType)
+        {
+            case Item.ItemType.PotionUpgrade:
+                ScoreUpgrade();
+            break;
+            case Item.ItemType.Protection:
+                Shield();
+            break;
+        }
     }
 }

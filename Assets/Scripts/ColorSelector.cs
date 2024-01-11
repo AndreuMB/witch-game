@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class ColorSelector : MonoBehaviour
 {
     // [SerializeField] ColorSelectorEnum cse;
-    public List<Color> potionColors;
+    public List<Potion> potions;
     [SerializeField] GameObject prefabPC;
     [SerializeField] GameObject playerPotions;
     [SerializeField] GameObject instructionPotions;
@@ -32,9 +32,9 @@ public class ColorSelector : MonoBehaviour
         ui = FindObjectOfType<UI>();
         pm = FindObjectOfType<PotionMark>();
 
-        foreach (Color color in potionColors)
+        foreach (Potion potion in potions)
         {
-            GameObject potionPlayer = InstanciatePotion(color, playerPotions);
+            GameObject potionPlayer = InstanciatePotion(potion.color, playerPotions);
             potionPlayer.tag = Tags.PotionPlayer.ToString();
 
             EventTrigger.Entry entry = new();
@@ -122,8 +122,8 @@ public class ColorSelector : MonoBehaviour
 
         for (int i = 0; i <= potionNum; i++)
         {
-            int potionType = Random.Range(0,potionColors.Count);
-            Color randomPotion = potionColors[potionType];
+            int potionType = Random.Range(0,potions.Count);
+            Color randomPotion = potions[potionType].color;
             GameObject newPotion = InstanciatePotion(randomPotion, instructionPotions);
             instructionPotionsList.Add(newPotion);
         }
