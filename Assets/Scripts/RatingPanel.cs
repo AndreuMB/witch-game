@@ -12,11 +12,13 @@ public class RatingPanel : MonoBehaviour
     public TMP_Text playAgain;
     ColorSelector cs;
     bool lockAction = true;
+    SkullFill skullFill;
 
     // Start is called before the first frame update
     void Start()
     {
         cs = FindObjectOfType<ColorSelector>();
+        skullFill = FindObjectOfType<SkullFill>();
     }
 
     void OnEnable(){
@@ -30,6 +32,7 @@ public class RatingPanel : MonoBehaviour
         if (Input.GetMouseButton(0) && !lockAction)
         {
             cs.GenerateInstructions();
+            skullFill.ResetPotionFill();
             lockAction = true;
             gameObject.SetActive(false);
         }

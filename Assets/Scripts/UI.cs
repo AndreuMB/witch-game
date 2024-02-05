@@ -10,7 +10,7 @@ public class UI : MonoBehaviour
     [SerializeField] Sprite spriteTest;
     [SerializeField] GameObject spawnPoint;
     [SerializeField] TMP_Text timeGO;
-    [SerializeField] GameObject ratingPanel;
+    [SerializeField] public GameObject ratingPanel;
     float timer;
     float y;
     PotionMark pm;

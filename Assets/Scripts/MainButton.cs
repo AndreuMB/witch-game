@@ -17,6 +17,7 @@ public class MainButton : MonoBehaviour
     ColorSelector cs;
     [SerializeField] float grow = 0.1f;
     PotionMark pm;
+    UI ui;
 
 
     // Start is called before the first frame update
@@ -24,33 +25,37 @@ public class MainButton : MonoBehaviour
     {
         cs = FindObjectOfType<ColorSelector>();
         pm = FindObjectOfType<PotionMark>();
+        ui = FindObjectOfType<UI>();
     }
 
     // Update is called once per frame
     void Update()
     {
 
-        if (Input.GetKeyDown(KeyCode.Mouse0) && EventSystem.current.currentSelectedGameObject
-            && EventSystem.current.currentSelectedGameObject.CompareTag(Tags.PotionPlayer.ToString())) pressed = true;
+        if (Input.GetKeyDown(KeyCode.Mouse0) && cs.selectedPlayerPotion
+            && cs.selectedPlayerPotion.CompareTag(Tags.PotionPlayer.ToString())
+            && !ui.ratingPanel.activeInHierarchy) pressed = true;
 
-        
         if (pressed)
         {
             if (!potion)
             {
                 potion = Instantiate(potionPrefab,spawnPoint.transform.position, Quaternion.identity);
-                potion.transform.localScale = new Vector3(1.7f,0.1f,1);
+                potion.transform.localScale = new Vector3(4f,0.1f,1);
             }
             // potion.transform.localScale = new Vector3(potion.transform.localScale.x,potion.transform.localScale.y + grow * Time.deltaTime,potion.transform.localScale.z);
             potion.transform.localScale += Vector3.up * grow * Time.deltaTime;
         }
+
+        // print("potion =" + potion);
+        
 
         if (!potion) return;
 
         float glassTop = glass.transform.GetChild(0).transform.position.y;
         float potionTop = potion.transform.GetChild(0).transform.position.y;
 
-        Color instructionColor = cs.selectedInstructionPotion.GetComponent<Image>().color;
+        Color instructionColor = cs.selectedInstructionPotion.GetComponent<PotionRef>().GetColor();
         Color potionColor = potion.GetComponent<SpriteRenderer>().color;
 
         if( (glassTop-potionTop) < 0 || potionColor != instructionColor) {

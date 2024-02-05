@@ -14,6 +14,7 @@ public class PotionMark : MonoBehaviour, IShop
     [SerializeField] GameObject floatScorePrefab;
     ColorSelector cs;
     public int shield;
+    public UnityEvent<GameObject> success;
 
     // Start is called before the first frame update
     void Start()
@@ -68,12 +69,13 @@ public class PotionMark : MonoBehaviour, IShop
             givenScore = 100;
             score-=100;
         }
+        if (operatorScorePoints == "+") success.Invoke(potion);
         scoreTxt.text = "SCORE: " + score.ToString();
         GameObject SP = Instantiate(scorePoints, scoreTxt.transform);
         SP.GetComponent<TMP_Text>().text = operatorScorePoints + givenScore.ToString();
         
         Quaternion zRotation = Quaternion.Euler(new Vector3(0, 0, Random.Range(-20,20)));
-        GameObject floatScore = Instantiate(floatScorePrefab, new Vector3(0.5f,2,0), Quaternion.identity).transform.GetChild(0).gameObject;
+        GameObject floatScore = Instantiate(floatScorePrefab, new Vector3(0.5f,2,-2), Quaternion.identity).transform.GetChild(0).gameObject;
         floatScore.transform.rotation = zRotation;
         floatScore.GetComponent<TextMesh>().text = scoreMessage;
         float thrust = 200f;
@@ -88,7 +90,7 @@ public class PotionMark : MonoBehaviour, IShop
 
     void UpdateMark(){
         float yPosition = Random.Range(-transform.localScale.y/4,transform.localScale.y/2);
-        Vector3 markPosition = new Vector3(transform.position.x, transform.position.y + yPosition, -1);
+        Vector3 markPosition = new Vector3(transform.position.x, transform.position.y + yPosition, -2);
         mark.transform.position = markPosition;
     }
 

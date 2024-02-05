@@ -17,7 +17,8 @@ public class ColorSelector : MonoBehaviour
     GameObject selectorInstructionPotions;
     public List<GameObject> instructionPotionsList;
     public GameObject selectedInstructionPotion;
-    [SerializeField] GameObject potionColorContainer;
+    public GameObject selectedPlayerPotion;
+    // [SerializeField] GameObject potionColorContainer;
     MainButton mb;
     public UnityEvent calculateScore = new();
     UI ui;
@@ -40,31 +41,34 @@ public class ColorSelector : MonoBehaviour
             EventTrigger.Entry entry = new();
             entry.eventID = EventTriggerType.PointerDown;
             entry.callback.AddListener((ev) => SetPlayerPotion(potionPlayer));
-            potionPlayer.GetComponentInChildren<EventTrigger>().triggers.Add(entry);
+            potionPlayer.GetComponent<EventTrigger>().triggers.Add(entry);
         }
 
         selectorPlayerPotions = Instantiate(selectorPrefab);
         
-        SetPlayerPotion(playerPotions.transform.GetChild(0).transform.GetChild(0).gameObject);
+        SetPlayerPotion(playerPotions.transform.GetChild(0).gameObject);
 
         originalPosition = instructionPotions.GetComponent<RectTransform>().anchoredPosition;
 
         GenerateInstructions();
 
+        selectedInstructionPotion = instructionPotionsList[0];
+
     }
 
     GameObject InstanciatePotion(Color color, GameObject parent){
-        GameObject potionCC = Instantiate(potionColorContainer, parent.transform);
+        // GameObject potionCC = Instantiate(potionColorContainer, parent.transform);
         GameObject potionColor = Instantiate(prefabPC);
-        potionColor.transform.SetParent(potionCC.transform);
-        // potionColor.transform.SetAsLastSibling();
-        potionColor.GetComponent<Image>().color = color;
+        // potionColor.transform.SetParent(potionCC.transform);
+        potionColor.transform.SetParent(parent.transform);
+        potionColor.GetComponent<PotionRef>().SetColor(color);
         return potionColor;
     }
 
     void PotionSelector(GameObject potion){
         // selector.transform.SetParent(potion.transform,false);
-        potion.transform.GetChild(0).gameObject.SetActive(false);
+        potion.GetComponent<PotionRef>().highlight.SetActive(false);
+        selectedPlayerPotion = potion;
         // selector.GetComponent<Image>().color = Color.black;
         // selector.transform.localScale = new Vector3(2,2,2);
     }
@@ -110,7 +114,7 @@ public class ColorSelector : MonoBehaviour
 
         RectTransform rt = instructionPotions.GetComponent<RectTransform>(); //getting reference to  component
         rt.anchoredPosition = originalPosition;
-        targetPosition = instructionPotions.transform.localPosition;
+        targetPosition = rt.anchoredPosition;
 
         instructionPotionsList = new();
         int potionNum = Random.Range(25,30);
@@ -136,11 +140,12 @@ public class ColorSelector : MonoBehaviour
 
 
     void SetPlayerPotion(GameObject potion){
+        // mask/unselect all potions
         foreach (Transform playerPotion in playerPotions.transform)
         {
-            playerPotion.GetChild(0).GetChild(0).gameObject.SetActive(true);
+            playerPotion.GetComponent<PotionRef>().highlight.SetActive(true);
         }
-        mb.PotionColor(potion.GetComponentInChildren<Image>().color);
+        mb.PotionColor(potion.GetComponent<PotionRef>().GetColor());
         PotionSelector(potion);
     }
 
@@ -149,15 +154,14 @@ public class ColorSelector : MonoBehaviour
         float currentTime=0; // actual floting time 
         float normalizedValue;
 
-        RectTransform rt = instructionPotions.GetComponent<RectTransform>(); //getting reference to component 
+        RectTransform rt = instructionPotions.GetComponent<RectTransform>(); //getting reference to component
         rt.anchoredPosition = targetPosition;
-        targetPosition = new(instructionPotions.transform.localPosition.x-300,instructionPotions.transform.localPosition.y);
-        
-        while (currentTime <= timeOfTravel) { 
+        targetPosition = new(rt.anchoredPosition.x-300,rt.anchoredPosition.y);
+        while (currentTime <= timeOfTravel) {
             currentTime += Time.deltaTime; 
             normalizedValue=currentTime/timeOfTravel; // we normalize our time 
 
-            rt.anchoredPosition=Vector3.Lerp(instructionPotions.transform.localPosition, targetPosition, normalizedValue); 
+            rt.anchoredPosition=Vector3.Lerp(rt.anchoredPosition, targetPosition, normalizedValue);
             yield return null; 
         }
     }
