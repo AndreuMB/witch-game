@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
@@ -18,6 +19,7 @@ public class MainButton : MonoBehaviour
     [SerializeField] float grow = 0.1f;
     PotionMark pm;
     UI ui;
+    Shop shop;
 
 
     // Start is called before the first frame update
@@ -26,16 +28,56 @@ public class MainButton : MonoBehaviour
         cs = FindObjectOfType<ColorSelector>();
         pm = FindObjectOfType<PotionMark>();
         ui = FindObjectOfType<UI>();
+        shop = FindObjectOfType<Shop>();
     }
 
     // Update is called once per frame
     void Update()
     {
 
+        // print(EventSystem.current.gameObject.CompareTag(Tags.PotionPlayer.ToString()));
+
+        // if (EventSystem.current.IsPointerOverGameObject()) return;
+
+        if (shop.shopPanel.activeInHierarchy) return;
+        
+
         if (Input.GetKeyDown(KeyCode.Mouse0) && cs.selectedPlayerPotion
             && cs.selectedPlayerPotion.CompareTag(Tags.PotionPlayer.ToString())
-            && !ui.ratingPanel.activeInHierarchy) pressed = true;
+            && !ui.ratingPanel.activeInHierarchy) {
 
+            //Fetch the Raycaster from the GameObject (the Canvas)
+            GraphicRaycaster m_Raycaster = FindObjectOfType<GraphicRaycaster>();
+            //Fetch the Event System from the Scene
+            EventSystem m_EventSystem = FindObjectOfType<EventSystem>();
+
+            //Set up the new Pointer Event
+             PointerEventData  m_PointerEventData = new PointerEventData(m_EventSystem);
+            //Set the Pointer Event Position to that of the mouse position
+            m_PointerEventData.position = Input.mousePosition;
+
+            //Create a list of Raycast Results
+            List<RaycastResult> results = new List<RaycastResult>();
+
+            //Raycast using the Graphics Raycaster and mouse click position
+            m_Raycaster.Raycast(m_PointerEventData, results);
+
+            //For every result returned, output the name of the GameObject on the Canvas hit by the Ray
+            foreach (RaycastResult result in results)
+            {
+                if (result.gameObject.name == "ShopBtn") return;
+            }
+
+
+            pressed = true;
+
+                
+        }
+
+            
+        
+
+        
         if (pressed)
         {
             if (!potion)

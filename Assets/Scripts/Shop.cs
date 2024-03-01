@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 public class Shop : MonoBehaviour
 {
-    [SerializeField] GameObject shopPanel;
+    public GameObject shopPanel;
     [SerializeField] List<ItemData> itemsData;
     [SerializeField] GameObject itemsContainer;
     [SerializeField] GameObject itemPrefab;

@@ -8,6 +8,7 @@ public class Item : MonoBehaviour
 {
     [SerializeField] TMP_Text itemName;
     [SerializeField] TMP_Text priceTxt;
+    [SerializeField] Image icon;
     ItemData itemData;
     public int counter = 1;
     Shop shop;
@@ -22,6 +23,7 @@ public class Item : MonoBehaviour
     public void SetItemData(ItemData itemData){
         this.itemData = itemData;
         price = itemData.originalPrice;
+        SetIcon(itemData.itemType);
         UpdateItemData();
     }
 
@@ -41,7 +43,6 @@ public class Item : MonoBehaviour
     }
 
     public void UpdateItemPrice(){
-        print("counter = " + counter);
         if (counter>itemData.stock) {
             GetComponent<Button>().interactable = false;
             priceTxt.text = "NO STOCK";
@@ -55,6 +56,24 @@ public class Item : MonoBehaviour
 
     public ItemData GetItemData(){
         return itemData;
+    }
+
+    void SetIcon(ItemType itemType) {
+        ColorSelector cs = FindObjectOfType<ColorSelector>();
+        switch (itemType)
+        {
+            case ItemType.Potion0Upgrade:
+                icon.color = cs.potions[0].color;
+            break;
+            case ItemType.Potion1Upgrade:
+                icon.color = cs.potions[1].color;
+            break;
+            case ItemType.Potion2Upgrade:
+                icon.color = cs.potions[2].color;
+            break;
+            case ItemType.Protection:
+            break;
+        }
     }
 
     public enum ItemType {
